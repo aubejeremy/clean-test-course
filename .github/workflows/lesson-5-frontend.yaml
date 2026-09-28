@@ -3,7 +3,7 @@ name: Lesson 5 DAST
 on:
   push:
     branches:
-      - lesson-5
+      - lesson-5-aubejeremy
 jobs:
 #  function_test: (commented out to save learner time)
 #    runs-on: ubuntu-latest
@@ -28,3 +28,12 @@ jobs:
         run: zip -r deploy.zip build Dockerfile
       - name: '**PLACEHOLDER** Deploy to Elastic Beanstalk'
         run: echo Placeholder for Deployment
+ 
+  security_test:
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    steps:
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.15.0
+        with:
+          target: 'https://hangryhippo.quantic.host'
