@@ -3,7 +3,7 @@ name: Lesson 6
 on:
   push:
     branches:
-      - lesson-6
+      - lesson-6-aubejeremy
 jobs:
 #  function_test:
 #    runs-on: ubuntu-latest
@@ -17,6 +17,21 @@ jobs:
 #        run: npm test -- --coverage --watchAll=false
   deploy:
 #    needs: [function_test]
+  acceptance_test:
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    container: cypress/included:10.3.0
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - run: cypress run --config-file=cypress.config.js
+      - uses: actions/upload-artifact@v4.6.2
+        if: always()
+        with:
+          name: cypress-videos
+          path: frontend/cypress/videos
     runs-on: ubuntu-latest
     defaults:
       run:
