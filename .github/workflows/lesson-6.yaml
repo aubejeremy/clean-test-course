@@ -16,6 +16,17 @@ jobs:
 #      - name: Run functional tests
 #        run: npm test -- --coverage --watchAll=false
   deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v7.0.1
+#      - run: npm install && npm run build
+      - name: Generate deployment package
+        run: zip -r deploy.zip build Dockerfile
+      - name: '**PLACEHOLDER** Deploy to Elastic Beanstalk.'
+        run: echo Placeholder for Deployment
 #    needs: [function_test]
   acceptance_test:
     needs: [deploy]
@@ -32,17 +43,7 @@ jobs:
         with:
           name: cypress-videos
           path: frontend/cypress/videos
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend
-    steps:
-      - uses: actions/checkout@v7.0.1
-#      - run: npm install && npm run build
-      - name: Generate deployment package
-        run: zip -r deploy.zip build Dockerfile
-      - name: '**PLACEHOLDER** Deploy to Elastic Beanstalk.'
-        run: echo Placeholder for Deployment
+
 #  security_test:
 #    needs: [deploy]
 #    runs-on: ubuntu-latest
